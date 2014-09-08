@@ -11,23 +11,22 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var uuidTextField: UITextField!
-    @IBOutlet weak var getInfoButton: UIButton!
+    let locationManager = LocationService.instance.locationManager
     let config = NSDictionary(
         contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
     )
-    let locationManager = CLLocationManager()
     let uuidRegex = NSRegularExpression(
         pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
         options: nil,
         error: nil
     )
-    var alert: UIAlertView!
+    
+    @IBOutlet weak var uuidTextField: UITextField!
+    @IBOutlet weak var getInfoButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         uuidTextField.delegate = self
-        locationManager.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,7 +51,7 @@ class ViewController: UIViewController {
                 self.startMonitoring()
             } else {
                 if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied {
-                    alert = UIAlertView(
+                    var alert = UIAlertView(
                         title: "Unable to access location",
                         message: "Please enable location services in Settings > Privacy > Location Services for this app",
                         delegate: self,
@@ -62,7 +61,7 @@ class ViewController: UIViewController {
                 }
             }
         } else {
-            alert = UIAlertView(
+            var alert = UIAlertView(
                 title: "Unable to monitor for iBeacons",
                 message: "This device is unable to monitor regions for iBeacons",
                 delegate: self,
@@ -87,7 +86,7 @@ class ViewController: UIViewController {
             if match > 0 {
                 uuid = uuidTextField.text
             } else {
-                alert = UIAlertView(
+                var alert = UIAlertView(
                     title: "Invalid UUID",
                     message: "Please enter a valid UUID to search",
                     delegate: self,
@@ -110,20 +109,6 @@ extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField!) -> Bool {
         uuidTextField.resignFirstResponder()
         return true
-    }
-    
-}
-
-extension ViewController: CLLocationManagerDelegate {
-    
-    // called when location permission status is updated
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        println("status changed to \(status.toRaw())")
-    }
-    
-    // called when device encounters registered region
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-        println("entered region \(region.description)")
     }
     
 }
