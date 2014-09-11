@@ -12,6 +12,7 @@
 		7E975F60199C44C30087335F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E975F5E199C44C30087335F /* Main.storyboard */; };
 		7E975F62199C44C30087335F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E975F61199C44C30087335F /* Images.xcassets */; };
 		7E975F6E199C44C30087335F /* iBeaconsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E975F6D199C44C30087335F /* iBeaconsTests.swift */; };
+		7EA8E61C19C1EC5B00CD0E92 /* Beacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA8E61B19C1EC5B00CD0E92 /* Beacon.swift */; };
 		7EAC15C519BD4B4D00487835 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAC15C419BD4B4D00487835 /* LocationService.swift */; };
 		7EB8541619B8B1AB0090B73D /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB8541519B8B1AB0090B73D /* InfoViewController.swift */; };
 		7EF161E119B8F62B0092447D /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EF161E019B8F62B0092447D /* Config.plist */; };
@@ -37,6 +38,7 @@
 		7E975F67199C44C30087335F /* iBeaconsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iBeaconsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E975F6C199C44C30087335F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E975F6D199C44C30087335F /* iBeaconsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iBeaconsTests.swift; sourceTree = "<group>"; };
+		7EA8E61B19C1EC5B00CD0E92 /* Beacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Beacon.swift; sourceTree = "<group>"; };
 		7EAC15C419BD4B4D00487835 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		7EB8541519B8B1AB0090B73D /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		7EF161E019B8F62B0092447D /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				7E975F5C199C44C30087335F /* ViewController.swift */,
 				7EAC15C419BD4B4D00487835 /* LocationService.swift */,
 				7EB8541519B8B1AB0090B73D /* InfoViewController.swift */,
+				7EA8E61B19C1EC5B00CD0E92 /* Beacon.swift */,
 				7E975F5E199C44C30087335F /* Main.storyboard */,
 				7E975F61199C44C30087335F /* Images.xcassets */,
 				7E975F58199C44C30087335F /* Supporting Files */,
@@ -220,6 +223,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E975F5D199C44C30087335F /* ViewController.swift in Sources */,
+				7EA8E61C19C1EC5B00CD0E92 /* Beacon.swift in Sources */,
 				7EB8541619B8B1AB0090B73D /* InfoViewController.swift in Sources */,
 				7EAC15C519BD4B4D00487835 /* LocationService.swift in Sources */,
 				7E975F5B199C44C30087335F /* AppDelegate.swift in Sources */,

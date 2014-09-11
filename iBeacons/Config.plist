@@ -6,5 +6,9 @@
 	<string>00000000-0000-0000-0000-000000000000</string>
 	<key>identifier</key>
 	<string>test</string>
+	<key>major</key>
+	<integer>0</integer>
+	<key>minor</key>
+	<integer>0</integer>
 </dict>
 </plist>

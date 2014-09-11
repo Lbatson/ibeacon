@@ -75,6 +75,8 @@ class ViewController: UIViewController {
         uuidTextField.resignFirstResponder()
         var uuid = config.objectForKey("uuid") as String
         var identifier = config.objectForKey("identifier") as String
+        var major = CLBeaconMajorValue(config.objectForKey("major") as Int)
+        var minor = CLBeaconMinorValue(config.objectForKey("minor") as Int)
         // use default data unless uuid is entered
         if (countElements(uuidTextField.text) > 0) {
             // check if input is a valid uuid
@@ -95,8 +97,9 @@ class ViewController: UIViewController {
                 alert.show()
             }
         }
+        let beacon = Beacon(uuid: NSUUID(UUIDString: uuid), identifier: identifier, major: major, minor: minor)
         // begin monitoring for ibeacon
-        let beaconRegion = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: uuid), identifier: identifier)
+        let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
         locationManager.startMonitoringForRegion(beaconRegion)
         locationManager.startRangingBeaconsInRegion(beaconRegion)
     }
