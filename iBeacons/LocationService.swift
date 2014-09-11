@@ -12,6 +12,7 @@ import CoreLocation
 class LocationService: CLLocationManager {
     
     let locationManager = CLLocationManager()
+    var beacons: [Beacon]
     
     class var instance: LocationService {
         struct Singleton {
@@ -21,8 +22,50 @@ class LocationService: CLLocationManager {
     }
     
     override init() {
+        self.beacons = Array()
         super.init()
         locationManager.delegate = self
+    }
+    
+    func isBeaconCapable() -> Bool {
+        // check to insure device has capability to look for iBeacons
+        return CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion)
+    }
+    
+    func isLocationPermitted() -> Bool {
+        // check to make sure permissions are valid to use location info
+        return CLLocationManager.locationServicesEnabled() &&
+            (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Authorized ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse)
+    }
+    
+    func setBeacons() {
+        self.beacons = Array()
+        let config = NSDictionary(
+            contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
+        )
+        var uuid = config.objectForKey("uuid") as String
+        var identifier = config.objectForKey("identifier") as String
+        var major = CLBeaconMajorValue(config.objectForKey("major") as Int)
+        var minor = CLBeaconMinorValue(config.objectForKey("minor") as Int)
+        let beacon = Beacon(uuid: NSUUID(UUIDString: uuid), identifier: identifier, major: major, minor: minor)
+        self.beacons.append(beacon)
+    }
+    
+    func startMonitoringBeacons() {
+        for beacon in self.beacons {
+            let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
+            locationManager.startMonitoringForRegion(beaconRegion)
+            locationManager.startRangingBeaconsInRegion(beaconRegion)
+        }
+    }
+    
+    func stopMonitoringBeacons() {
+        for beacon in self.beacons {
+            let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
+            locationManager.stopMonitoringForRegion(beaconRegion)
+            locationManager.stopRangingBeaconsInRegion(beaconRegion)
+        }
     }
     
 }
@@ -31,7 +74,29 @@ extension LocationService: CLLocationManagerDelegate {
     
     // called when location permission status is updated
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        println("status changed to \(status.toRaw())")
+        var statusMessage = "N/A"
+        
+        switch status {
+        case .Authorized:
+            statusMessage = "Authorized"
+            self.startMonitoringBeacons()
+        case .AuthorizedWhenInUse:
+            statusMessage = "Authorized When In Use"
+            self.startMonitoringBeacons()
+        case .NotDetermined:
+            statusMessage = "Not Determined"
+            self.stopMonitoringBeacons()
+        case .Restricted:
+            statusMessage = "Restricted"
+            self.stopMonitoringBeacons()
+        case .Denied:
+            statusMessage = "Denied"
+            self.stopMonitoringBeacons()
+        default:
+            break;
+        }
+        
+        println("status changed to \(statusMessage)")
     }
     
     // called when device encounters registered region

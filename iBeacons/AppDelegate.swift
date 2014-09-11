@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
-
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
@@ -35,12 +35,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication!) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.runLocationChecks()
     }
 
     func applicationWillTerminate(application: UIApplication!) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
+    func runLocationChecks() {
+        if (LocationService.instance.isBeaconCapable()) {
+            if (!LocationService.instance.isLocationPermitted()) {
+                var alert = UIAlertView(
+                    title: "Unable to access location",
+                    message: "Please enable location services in Settings > Privacy > Location Services for this app",
+                    delegate: self,
+                    cancelButtonTitle: "OK"
+                )
+                alert.show()
+            }
+        } else {
+            var alert = UIAlertView(
+                title: "Unable to monitor for iBeacons",
+                message: "This device is unable to monitor regions for iBeacons",
+                delegate: self,
+                cancelButtonTitle: "OK"
+            )
+            alert.show()
+        }
+    }
 
 }
 
