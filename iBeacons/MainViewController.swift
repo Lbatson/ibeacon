@@ -26,6 +26,9 @@ class MainViewController: UITableViewController {
         // load info view and set data
         if segue.identifier == "info" {
             let infoVC = segue.destinationViewController as InfoViewController
+            if let indexPath = self.tableView.indexPathForSelectedRow() {
+                infoVC.beacon = self.locationService.beacons[indexPath.row]
+            }
         }
     }
 

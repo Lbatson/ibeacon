@@ -55,6 +55,7 @@ class LocationService: CLLocationManager {
     func startMonitoringBeacons() {
         for beacon in self.beacons {
             let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
+            beaconRegion.notifyEntryStateOnDisplay = true
             locationManager.startMonitoringForRegion(beaconRegion)
             locationManager.startRangingBeaconsInRegion(beaconRegion)
         }

@@ -10,12 +10,21 @@ import UIKit
 
 class InfoViewController: UIViewController {
 
-    @IBOutlet weak var infoLabel: UILabel!
-    var info = ""
+    var beacon: Beacon!
+    
+    @IBOutlet weak var uuidLabel: UILabel!
+    @IBOutlet weak var identifierLabel: UILabel!
+    @IBOutlet weak var majorLabel: UILabel!
+    @IBOutlet weak var minorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        infoLabel.text = info
+        uuidLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        uuidLabel.numberOfLines = 2
+        uuidLabel.text = beacon.uuid.UUIDString
+        identifierLabel.text = beacon.identifier
+        majorLabel.text = String(beacon.major)
+        minorLabel.text = String(beacon.minor)
     }
 
     override func didReceiveMemoryWarning() {
