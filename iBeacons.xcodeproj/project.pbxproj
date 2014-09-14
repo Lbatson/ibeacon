@@ -99,7 +99,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7E975F4C199C44C30087335F = {
+		7E586E2019C6165B001132DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				0A64001719C503B500C86EBA /* Parse.framework */,
@@ -114,8 +114,16 @@
 				0A64000519C5014200C86EBA /* CoreGraphics.framework */,
 				0A64000319C5013000C86EBA /* CFNetwork.framework */,
 				0A64000119C5009F00C86EBA /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7E975F4C199C44C30087335F = {
+			isa = PBXGroup;
+			children = (
 				7E975F57199C44C30087335F /* iBeacons */,
 				7E975F6A199C44C30087335F /* iBeaconsTests */,
+				7E586E2019C6165B001132DB /* Frameworks */,
 				7E975F56199C44C30087335F /* Products */,
 			);
 			sourceTree = "<group>";
