@@ -230,10 +230,11 @@
 				TargetAttributes = {
 					7E975F54199C44C30087335F = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = YFYRVYRLRS;
+						DevelopmentTeam = WHZG7MD987;
 					};
 					7E975F66199C44C30087335F = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = WHZG7MD987;
 						TestTargetID = 7E975F54199C44C30087335F;
 					};
 				};
