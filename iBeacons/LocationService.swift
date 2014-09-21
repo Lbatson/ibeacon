@@ -66,6 +66,7 @@ class LocationService: CLLocationManager {
             let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
             locationManager.stopMonitoringForRegion(beaconRegion)
             locationManager.stopRangingBeaconsInRegion(beaconRegion)
+            
         }
     }
     
