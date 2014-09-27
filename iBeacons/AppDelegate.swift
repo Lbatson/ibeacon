@@ -47,6 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func runLocationChecks() {
         if (LocationService.instance.isBeaconCapable()) {
             if (!LocationService.instance.isLocationPermitted()) {
+                if (UIDevice.currentDevice().systemVersion as NSString).floatValue > 7.0 {
+                    LocationService.instance.locationManager.requestAlwaysAuthorization()
+                }
                 var alert = UIAlertView(
                     title: "Unable to access location",
                     message: "Please enable location services in Settings > Privacy > Location Services for this app",
