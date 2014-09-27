@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func runLocationChecks() {
         if (LocationService.instance.isBeaconCapable()) {
             if (!LocationService.instance.isLocationPermitted()) {
-                if (UIDevice.currentDevice().systemVersion as NSString).floatValue > 7.0 {
+                if (UIDevice.currentDevice().systemVersion as NSString).floatValue >= 8.0 {
                     LocationService.instance.locationManager.requestAlwaysAuthorization()
                 }
                 var alert = UIAlertView(
