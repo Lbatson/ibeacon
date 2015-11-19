@@ -25,7 +25,7 @@ class InfoViewController: UIViewController {
         identifierLabel.text = beacon.identifier
         majorLabel.text = String(beacon.major)
         minorLabel.text = String(beacon.minor)
-        beacon.send2Parse(beacon)
+//        beacon.send2Parse(beacon)
     }
 
     override func didReceiveMemoryWarning() {

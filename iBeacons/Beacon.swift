@@ -23,14 +23,14 @@ class Beacon {
         self.minor = minor
     }
     
-    func send2Parse(beacon: Beacon!){
-        var beaconEvent = PFObject(className:"Event")
-        beaconEvent["uuid"] = beacon.uuid.UUIDString
-        beaconEvent["identifier"] = beacon.identifier
-        beaconEvent["major"] = Double(beacon.major)
-        beaconEvent["minor"] = Double(beacon.minor)
-        beaconEvent.saveInBackground()
-
-    }
+//    func send2Parse(beacon: Beacon!){
+//        var beaconEvent = PFObject(className:"Event")
+//        beaconEvent["uuid"] = beacon.uuid.UUIDString
+//        beaconEvent["identifier"] = beacon.identifier
+//        beaconEvent["major"] = Double(beacon.major)
+//        beaconEvent["minor"] = Double(beacon.minor)
+//        beaconEvent.saveInBackground()
+//
+//    }
     
 }

@@ -35,7 +35,7 @@ class LocationService: CLLocationManager {
     func isLocationPermitted() -> Bool {
         // check to make sure permissions are valid to use location info
         return CLLocationManager.locationServicesEnabled() &&
-            (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Authorized ||
+            (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways ||
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse)
     }
     
@@ -44,11 +44,11 @@ class LocationService: CLLocationManager {
         let config = NSDictionary(
             contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
         )
-        var uuid = config.objectForKey("uuid") as String
-        var identifier = config.objectForKey("identifier") as String
-        var major = CLBeaconMajorValue(config.objectForKey("major") as Int)
-        var minor = CLBeaconMinorValue(config.objectForKey("minor") as Int)
-        let beacon = Beacon(uuid: NSUUID(UUIDString: uuid), identifier: identifier, major: major, minor: minor)
+        let uuid = config!.objectForKey("uuid") as! String
+        let identifier = config!.objectForKey("identifier") as! String
+        let major = CLBeaconMajorValue(config!.objectForKey("major") as! Int)
+        let minor = CLBeaconMinorValue(config!.objectForKey("minor") as! Int)
+        let beacon = Beacon(uuid: NSUUID(UUIDString: uuid)!, identifier: identifier, major: major, minor: minor)
         self.beacons.append(beacon)
     }
     
@@ -75,12 +75,12 @@ class LocationService: CLLocationManager {
 extension LocationService: CLLocationManagerDelegate {
     
     // called when location permission status is updated
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         var statusMessage = "N/A"
         
         switch status {
-        case .Authorized:
-            statusMessage = "Authorized"
+        case .AuthorizedAlways:
+            statusMessage = "Authorized Always"
             self.startMonitoringBeacons()
         case .AuthorizedWhenInUse:
             statusMessage = "Authorized When In Use"
@@ -94,26 +94,24 @@ extension LocationService: CLLocationManagerDelegate {
         case .Denied:
             statusMessage = "Denied"
             self.stopMonitoringBeacons()
-        default:
-            break;
         }
         
-        println("status changed to \(statusMessage)")
+        print("status changed to \(statusMessage)")
     }
     
     // called when device encounters registered region
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-        println("entered region \(region.description)")
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("entered region \(region.description)")
     }
     
     // called when device leaves registered region
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-        println("exited region \(region.description)")
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("exited region \(region.description)")
     }
     
     // called when ranging becons in a specified region
-    func locationManager(manager: CLLocationManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        println("ranging for beacons \(beacons) in region \(region)")
+    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+        print("ranging for beacons \(beacons) in region \(region)")
     }
     
 }

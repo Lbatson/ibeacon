@@ -25,25 +25,21 @@ class MainViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         // load info view and set data
         if segue.identifier == "info" {
-            let infoVC = segue.destinationViewController as InfoViewController
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
+            let infoVC = segue.destinationViewController as! InfoViewController
+            if let indexPath = self.tableView.indexPathForSelectedRow {
                 infoVC.beacon = self.locationService.beacons[indexPath.row]
             }
         }
     }
-
-}
-
-extension MainViewController: UITableViewDataSource {
-        
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Return the number of sections.
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
-        println("beacon count: \(self.locationService.beacons.count)")
+        print("beacon count: \(self.locationService.beacons.count)")
         return self.locationService.beacons.count
     }
     
@@ -61,12 +57,7 @@ extension MainViewController: UITableViewDataSource {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-    
-}
 
-extension MainViewController: UITableViewDelegate {
-    
-    
 }
 
 
