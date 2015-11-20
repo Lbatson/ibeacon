@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import Parse
 
 class Beacon {
     
