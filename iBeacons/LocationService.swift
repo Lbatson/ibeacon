@@ -12,6 +12,7 @@ import CoreLocation
 class LocationService: CLLocationManager {
     
     let locationManager = CLLocationManager()
+    let notificationCenter = NSNotificationCenter.defaultCenter()
     var beacons: [Beacon]
     
     class var instance: LocationService {
@@ -34,9 +35,7 @@ class LocationService: CLLocationManager {
     
     func isLocationPermitted() -> Bool {
         // check to make sure permissions are valid to use location info
-        return CLLocationManager.locationServicesEnabled() &&
-            (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways ||
-            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse)
+        return CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways
     }
     
     func setBeacons() {
@@ -88,12 +87,15 @@ extension LocationService: CLLocationManagerDelegate {
         case .NotDetermined:
             statusMessage = "Not Determined"
             self.stopMonitoringBeacons()
+            locationManager.requestAlwaysAuthorization()
         case .Restricted:
             statusMessage = "Restricted"
             self.stopMonitoringBeacons()
+            notificationCenter.postNotificationName("Location_Restricted", object: nil)
         case .Denied:
             statusMessage = "Denied"
             self.stopMonitoringBeacons()
+            notificationCenter.postNotificationName("Location_Denied", object: nil)
         }
         
         print("status changed to \(statusMessage)")

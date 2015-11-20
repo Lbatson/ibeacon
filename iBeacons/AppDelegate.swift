@@ -13,9 +13,12 @@ import CoreLocation
 class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
+    let notificationCenter = NSNotificationCenter.defaultCenter()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        notificationCenter.addObserver(self, selector: Selector("displayLocationSettingsAlert"), name: "Location_Restricted", object: nil)
+        notificationCenter.addObserver(self, selector: Selector("displayLocationSettingsAlert"), name: "Location_Denied", object: nil)
         return true
     }
 
@@ -40,20 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        notificationCenter.removeObserver(self)
     }
     
     func runLocationChecks() {
-        if (LocationService.instance.isBeaconCapable()) {
-            if (!LocationService.instance.isLocationPermitted()) {
-                let alert = UIAlertView(
-                    title: "Unable to access location",
-                    message: "Please enable location services in Settings > Privacy > Location Services for this app",
-                    delegate: self,
-                    cancelButtonTitle: "OK"
-                )
-                alert.show()
-            }
-        } else {
+        if (!LocationService.instance.isBeaconCapable()) {
             let alert = UIAlertView(
                 title: "Unable to monitor for iBeacons",
                 message: "This device is unable to monitor regions for iBeacons",
@@ -62,6 +56,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             )
             alert.show()
         }
+    }
+    
+    func displayLocationSettingsAlert () {
+        let alert = UIAlertView(
+            title: "Unable to access location",
+            message: "Please enable location services in Settings > Privacy > Location Services for this app",
+            delegate: self,
+            cancelButtonTitle: "OK"
+        )
+        alert.show()
     }
 
 }
