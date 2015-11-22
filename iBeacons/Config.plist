@@ -2,13 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>uuid</key>
-	<string>00000000-0000-0000-0000-000000000000</string>
-	<key>identifier</key>
-	<string>test</string>
-	<key>major</key>
-	<integer>0</integer>
-	<key>minor</key>
-	<integer>0</integer>
+	<key>regions</key>
+	<array>
+		<dict>
+			<key>uuid</key>
+			<string>00000000-0000-0000-0000-000000000000</string>
+			<key>identifier</key>
+			<string>test-0</string>
+			<key>major</key>
+			<integer>0</integer>
+			<key>minor</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>uuid</key>
+			<string>00000000-0000-0000-0000-000000000000</string>
+			<key>identifier</key>
+			<string>test-1</string>
+			<key>major</key>
+			<integer>1</integer>
+			<key>minor</key>
+			<integer>0</integer>
+		</dict>
+	</array>
 </dict>
 </plist>

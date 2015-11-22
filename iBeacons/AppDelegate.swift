@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        notificationCenter.addObserver(self, selector: Selector("displayBeaconUnsupportedAlert"), name: "Beacon_Unsupported", object: nil)
         notificationCenter.addObserver(self, selector: Selector("displayLocationSettingsAlert"), name: "Location_Restricted", object: nil)
         notificationCenter.addObserver(self, selector: Selector("displayLocationSettingsAlert"), name: "Location_Denied", object: nil)
         return true
@@ -38,7 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        self.runLocationChecks()
     }
 
     func applicationWillTerminate(application: UIApplication) {
@@ -46,19 +45,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notificationCenter.removeObserver(self)
     }
     
-    func runLocationChecks() {
-        if (!LocationService.instance.isBeaconCapable()) {
-            let alert = UIAlertView(
-                title: "Unable to monitor for iBeacons",
-                message: "This device is unable to monitor regions for iBeacons",
-                delegate: self,
-                cancelButtonTitle: "OK"
-            )
-            alert.show()
-        }
+    func displayBeaconUnsupportedAlert() {
+        let alert = UIAlertView(
+            title: "Unable to monitor for iBeacons",
+            message: "This device is unable to monitor regions for iBeacons",
+            delegate: self,
+            cancelButtonTitle: "OK"
+        )
+        alert.show()
     }
     
-    func displayLocationSettingsAlert () {
+    func displayLocationSettingsAlert() {
         let alert = UIAlertView(
             title: "Unable to access location",
             message: "Please enable location services in Settings > Privacy > Location Services for this app",

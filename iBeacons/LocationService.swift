@@ -13,7 +13,7 @@ class LocationService: CLLocationManager {
     
     let locationManager = CLLocationManager()
     let notificationCenter = NSNotificationCenter.defaultCenter()
-    var beacons: [Beacon]
+    var beacons: [CLBeaconRegion]
     
     class var instance: LocationService {
         struct Singleton {
@@ -26,6 +26,11 @@ class LocationService: CLLocationManager {
         self.beacons = Array()
         super.init()
         locationManager.delegate = self
+        
+        guard isBeaconCapable() else {
+            notificationCenter.postNotificationName("Beacon_Unsupported", object: nil)
+            return
+        }
     }
     
     func isBeaconCapable() -> Bool {
@@ -33,39 +38,32 @@ class LocationService: CLLocationManager {
         return CLLocationManager.isMonitoringAvailableForClass(CLBeaconRegion)
     }
     
-    func isLocationPermitted() -> Bool {
-        // check to make sure permissions are valid to use location info
-        return CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways
-    }
-    
     func setBeacons() {
-        self.beacons = Array()
-        let config = NSDictionary(
-            contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
-        )
-        let uuid = config!.objectForKey("uuid") as! String
-        let identifier = config!.objectForKey("identifier") as! String
-        let major = CLBeaconMajorValue(config!.objectForKey("major") as! Int)
-        let minor = CLBeaconMinorValue(config!.objectForKey("minor") as! Int)
-        let beacon = Beacon(uuid: NSUUID(UUIDString: uuid)!, identifier: identifier, major: major, minor: minor)
-        self.beacons.append(beacon)
+        let config = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!)
+        let regions = config!.objectForKey("regions") as! [NSDictionary]
+        
+        for region in regions {
+            let uuid = region.objectForKey("uuid") as! String
+            let identifier = region.objectForKey("identifier") as! String
+            let major = CLBeaconMajorValue(region.objectForKey("major") as! Int)
+            let minor = CLBeaconMinorValue(region.objectForKey("minor") as! Int)
+            let beacon = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: uuid)!, major: major, minor: minor, identifier: identifier)
+            self.beacons.append(beacon)
+        }
     }
     
     func startMonitoringBeacons() {
         for beacon in self.beacons {
-            let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
-            beaconRegion.notifyEntryStateOnDisplay = true
-            locationManager.startMonitoringForRegion(beaconRegion)
-            locationManager.startRangingBeaconsInRegion(beaconRegion)
+            beacon.notifyEntryStateOnDisplay = true
+            locationManager.startMonitoringForRegion(beacon)
+            locationManager.startRangingBeaconsInRegion(beacon)
         }
     }
     
     func stopMonitoringBeacons() {
         for beacon in self.beacons {
-            let beaconRegion = CLBeaconRegion(proximityUUID: beacon.uuid, identifier: beacon.identifier)
-            locationManager.stopMonitoringForRegion(beaconRegion)
-            locationManager.stopRangingBeaconsInRegion(beaconRegion)
-            
+            locationManager.stopMonitoringForRegion(beacon)
+            locationManager.stopRangingBeaconsInRegion(beacon)
         }
     }
     
